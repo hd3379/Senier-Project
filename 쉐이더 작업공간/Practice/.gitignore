@@ -4,15 +4,19 @@
  
 # =============== #
  
-Temp/
- 
-Obj/
- 
+[Ll]ibrary/ 
+
+[Tt]emp/ 
+
+[Oo]bj/ 
+
+[Bb]uild/ 
+
+[Bb]uilds/ 
+
+[Ll]ogs/
+
 UnityGenerated/
- 
-Library/
- 
- 
  
 # ===================================== #
  
@@ -69,6 +73,3 @@ GraphicsSettings.asset
 ProjectSettings.asset
  
 ProjectVersion.txt
-
-
-출처: https://minhyeokism.tistory.com/67 [programmer-dominic.kim]
