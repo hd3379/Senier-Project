@@ -1,14 +1,20 @@
 ﻿Shader "Custom/Geometry/Pyramids2"
 {
-    Properties
-    {
-        _MainTex("Texture", 2D) = "white" {}
+    Properties{
+        _MainTex("MainTex",2D) = "white"{}
+        _Alpha("Alpha",Float) = 1
         _Factor("Factor", Range(0., 2.)) = 0.2
     }
         SubShader
         {
-            Tags { "RenderType" = "Opaque" }
-            Cull Off
+           Tags {"Queue" = "Transparent" "RenderType" = "Transparent"}
+            Blend SrcAlpha OneMinusSrcAlpha
+
+
+            GrabPass
+            {
+                "_GrabTexture"
+            }
 
             Pass
             {
@@ -18,6 +24,13 @@
                 #pragma geometry geom
 
                 #include "UnityCG.cginc"
+
+                struct appdata
+                {
+                    float4 vertex : POSITION;
+                    float2 grabPos : TEXCOORD0;
+                    float3 normal :NORMAL;
+                };
 
                 struct v2g
                 {
@@ -36,6 +49,7 @@
                 sampler2D _MainTex;
                 float4 _MainTex_ST;
 
+                // vert 생성
                 v2g vert(appdata_base v)
                 {
                     v2g o;
@@ -45,6 +59,7 @@
                     return o;
                 }
 
+             
                 float _Factor;
 
                 [maxvertexcount(12)]
@@ -52,15 +67,17 @@
                 {
                     g2f o;
 
+                    //외적으로 앞면 노멀값
                     float3 normalFace = normalize(cross(IN[1].vertex - IN[0].vertex, IN[2].vertex - IN[0].vertex));
 
                     float edge1 = distance(IN[1].vertex, IN[0].vertex);
                     float edge2 = distance(IN[2].vertex, IN[0].vertex);
                     float edge3 = distance(IN[2].vertex, IN[1].vertex);
 
+                    //중심 위치와 중심uv좌표구하기 step함수는 앞에게 더크면 1 아니면 0을 줌
                     float3 centerPos = (IN[0].vertex + IN[1].vertex) / 2;
                     float2 centerTex = (IN[0].uv + IN[1].uv) / 2;
-
+                   
                     if ((step(edge1, edge2) * step(edge3, edge2)) == 1.0)
                     {
                         centerPos = (IN[2].vertex + IN[0].vertex) / 2;
@@ -74,6 +91,7 @@
 
                     centerPos += float4(normalFace, 0) * _Factor;
 
+                    //3개의 vertex 중 2개와 센터 vertex 와 함께 새 삼각형 스트림 생성
                     for (int i = 0; i < 3; i++)
                     {
                         o.pos = UnityObjectToClipPos(IN[i].vertex);
@@ -120,5 +138,6 @@
                 }
                 ENDCG
             }
+           
         }
 }
