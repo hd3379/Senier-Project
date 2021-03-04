@@ -121,6 +121,26 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &3070831 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: a5fd7f6de6af2c74f8d74c0d0f861e2e,
+    type: 3}
+  m_PrefabInstance: {fileID: 537198318}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3070836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3070831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b5fa71c9e35e2e489a8d018564b0a94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Pyramid: {fileID: 1026805142}
+  mesh: {fileID: 4300000, guid: a5fd7f6de6af2c74f8d74c0d0f861e2e, type: 3}
 --- !u!1001 &516479652
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -850,6 +870,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!1 &1307720804 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: e7ba6850887ae694a970af5f171fa6d5,
+    type: 3}
+  m_PrefabInstance: {fileID: 826401807}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1307720809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307720804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b5fa71c9e35e2e489a8d018564b0a94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Pyramid: {fileID: 1026805142}
+  mesh: {fileID: 4300000, guid: e7ba6850887ae694a970af5f171fa6d5, type: 3}
 --- !u!1001 &1410176268
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -865,7 +905,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 6f4a3412bc3a04e46900d10d05cf05fe,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 23.6
+      value: 35.9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4a3412bc3a04e46900d10d05cf05fe,
         type: 3}
@@ -915,23 +955,23 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 6f4a3412bc3a04e46900d10d05cf05fe,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 400
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4a3412bc3a04e46900d10d05cf05fe,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 400
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4a3412bc3a04e46900d10d05cf05fe,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 400
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 417954680075800231, guid: 6f4a3412bc3a04e46900d10d05cf05fe,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 24ee6c8ed43b8bf499a4c6fef008b620, type: 2}
+      objectReference: {fileID: 2100000, guid: a42c1171e598cc1489276ced679f0380, type: 2}
     - target: {fileID: 919132149155446097, guid: 6f4a3412bc3a04e46900d10d05cf05fe,
         type: 3}
       propertyPath: m_Name
@@ -1106,10 +1146,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2053954103}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94afae7bb558bee4991aed95aba22076, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b5fa71c9e35e2e489a8d018564b0a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Pyramid: {fileID: 1026805142}
+  mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!136 &2053954105
 CapsuleCollider:
   m_ObjectHideFlags: 0

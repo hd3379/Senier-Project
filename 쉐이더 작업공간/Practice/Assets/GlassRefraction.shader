@@ -52,7 +52,6 @@ Tags {"Queue" = "Transparent" "RenderType" = "Transparent"}
                 {
                     fixed4 col = tex2Dproj(_GrabTexture, i.grabPos + _Refraction);
                     return float4(col.rgb,_Alpha);
-
                 }
                 ENDCG
             }

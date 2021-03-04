@@ -24,7 +24,7 @@ public class Pyramid : MonoBehaviour
     // Update is called once per frame
     void Update()
     { 
-        transform.Translate(TransRate * Time.deltaTime);
+        //transform.Translate(TransRate * Time.deltaTime);
         transform.Rotate(RotationRate * Time.deltaTime, Space.World) ;
     }
 
