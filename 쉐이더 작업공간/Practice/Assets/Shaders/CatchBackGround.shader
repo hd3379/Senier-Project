@@ -12,7 +12,7 @@ Tags {"Queue"="Transparent" "RenderType"="Transparent"}
 
         GrabPass
         {
-            "_GrabTexture"
+            //"_GrabTexture"
         }
 
         Pass

@@ -6,9 +6,12 @@ public class initPyramidsToBuilding : MonoBehaviour
 {
     public GameObject Pyramid;
     public Renderer renderer;
+    private bool state;
+
     // Start is called before the first frame update
     void Start()
     {
+        state = true;
         CreatePyramids();
     }
     protected static float InitPyramid = 0;
@@ -77,5 +80,12 @@ public class initPyramidsToBuilding : MonoBehaviour
     }
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (state == true)
+            {
+                gameObject.SetActive(false);
+            }
+        }
     }
 }
