@@ -32,8 +32,8 @@ public class Pyramid : MonoBehaviour
         {
             MovingVector = (BlackhallPos - WorldPos) * Time.deltaTime * 0.2f;  //5초에 걸쳐 적용
             WorldPos = WorldPos + (MovingVector);
-            transform.Translate(MovingVector);
-            if((MovingVector.sqrMagnitude) < 0.1f * Time.deltaTime * 0.2f)
+            transform.Translate(MovingVector,Space.World);
+            if((MovingVector.sqrMagnitude) < 0.01f * Time.deltaTime * 0.2f)
             {
                 WorldChange = 2;
             }
@@ -42,8 +42,8 @@ public class Pyramid : MonoBehaviour
         {
             MovingVector = (OriginPos - WorldPos) * Time.deltaTime * 0.2f;
             WorldPos = WorldPos + (MovingVector);
-            transform.Translate(MovingVector);
-            if ((MovingVector.sqrMagnitude) < 0.1f * Time.deltaTime * 0.2f)
+            transform.Translate(MovingVector,Space.World);
+            if ((MovingVector.sqrMagnitude) < 0.01f * Time.deltaTime * 0.2f)
             {
                 WorldChange = 0;
             }
@@ -51,7 +51,7 @@ public class Pyramid : MonoBehaviour
         else
         {
         }
-        transform.Rotate(RotationRate * Time.deltaTime, Space.World);
+        transform.Rotate(RotationRate * Time.deltaTime, Space.Self);
     }
 
 }
