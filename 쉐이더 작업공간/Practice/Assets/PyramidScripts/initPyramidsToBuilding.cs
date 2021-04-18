@@ -32,7 +32,7 @@ public class initPyramidsToBuilding : MonoBehaviour
             {
                 //정면
                 Vector3 PyramidPosition = transform.position - (BoundSize/2);
-                PyramidPosition.y += (BoundSize.y / 2); //3D모델의 좌표가 (0,0,0)이 바닥이냐 중심이냐에 따라 다르더라
+                //PyramidPosition.y += (BoundSize.y / 2); //3D모델의 좌표가 (0,0,0)이 바닥이냐 중심이냐에 따라 다르더라
                 PyramidPosition.x += (BoundSize.x / PyramidNum) * i;
                 PyramidPosition.y += (BoundSize.y / PyramidNum) * j;
                 PyramidPosition.z += BoundSize.z;
@@ -41,14 +41,14 @@ public class initPyramidsToBuilding : MonoBehaviour
 
                 //왼면
                 PyramidPosition = transform.position - (BoundSize / 2);
-                PyramidPosition.y += (BoundSize.y / 2);
+                //PyramidPosition.y += (BoundSize.y / 2);
                 PyramidPosition.y += (BoundSize.y / PyramidNum) * i;
                 PyramidPosition.z += (BoundSize.z / PyramidNum) * j;
                 Instantiate(Pyramid, PyramidPosition, transform.rotation);
 
                 //오른면
                 PyramidPosition = transform.position - (BoundSize / 2);
-                PyramidPosition.y += (BoundSize.y / 2);
+                //PyramidPosition.y += (BoundSize.y / 2);
                 PyramidPosition.x += BoundSize.x;
                 PyramidPosition.y += (BoundSize.y / PyramidNum) * i;
                 PyramidPosition.z += (BoundSize.z / PyramidNum) * j;
@@ -56,14 +56,14 @@ public class initPyramidsToBuilding : MonoBehaviour
 
                 //뒷면
                 PyramidPosition = transform.position - (BoundSize / 2);
-                PyramidPosition.y += (BoundSize.y / 2);
+                //PyramidPosition.y += (BoundSize.y / 2);
                 PyramidPosition.x += (BoundSize.x / PyramidNum) * i;
                 PyramidPosition.y += (BoundSize.y / PyramidNum) * j;
                 Instantiate(Pyramid, PyramidPosition, transform.rotation);
 
                 //윗면
                 PyramidPosition = transform.position - (BoundSize / 2);
-                PyramidPosition.y += (BoundSize.y / 2);
+                //PyramidPosition.y += (BoundSize.y / 2);
                 PyramidPosition.x += (BoundSize.x / PyramidNum) * i;
                 PyramidPosition.y += BoundSize.y;
                 PyramidPosition.z += (BoundSize.z / PyramidNum) * j;
@@ -71,7 +71,7 @@ public class initPyramidsToBuilding : MonoBehaviour
 
                 //아랫면
                 PyramidPosition = transform.position - (BoundSize / 2);
-                PyramidPosition.y += (BoundSize.y / 2);
+                //PyramidPosition.y += (BoundSize.y / 2);
                 PyramidPosition.x += (BoundSize.x / PyramidNum) * i;
                 PyramidPosition.z += (BoundSize.z / PyramidNum) * j;
                 Instantiate(Pyramid, PyramidPosition, transform.rotation);
