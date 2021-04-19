@@ -12,6 +12,8 @@ public class Pyramid : MonoBehaviour
     public Vector3 BlackhallPos;
     private Vector3 OriginPos;
     private Vector3 MovingVector;
+    float movingTime;
+    bool IsMove;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +25,8 @@ public class Pyramid : MonoBehaviour
         RotationRate = new Vector3(Ranx * RotateSpeed, Rany * RotateSpeed, Ranz * RotateSpeed);
         WorldPos = this.gameObject.transform.position;
         OriginPos = WorldPos;
+        IsMove = false;
+        movingTime = Time.time;
     }
 
     // Update is called once per frame
@@ -30,22 +34,67 @@ public class Pyramid : MonoBehaviour
     {
         if (WorldChange == 1)
         {
-            MovingVector = (BlackhallPos - WorldPos) * Time.deltaTime * 0.2f;  //5초에 걸쳐 적용
-            WorldPos = WorldPos + (MovingVector);
-            transform.Translate(MovingVector,Space.World);
-            if((MovingVector.sqrMagnitude) < 0.01f * Time.deltaTime * 0.2f)
+            if (IsMove == false)
             {
-                WorldChange = 2;
+                if (Random.value > 0.995f) {
+                    IsMove = true;
+                    MovingVector = (BlackhallPos - WorldPos);
+                }
+                if (Time.time - movingTime >= 4.0f) //이동 못하고 있으면 4초후에는 출발
+                {
+                    IsMove = true;
+                    MovingVector = (BlackhallPos - WorldPos);
+                }
+            }
+            if (IsMove == true)
+            {
+                Vector3 DoMove = MovingVector * Time.deltaTime * 0.5f; //2초후에 도달
+                if ((BlackhallPos - WorldPos).sqrMagnitude < (BlackhallPos - (WorldPos + DoMove)).sqrMagnitude)
+                {
+                    MovingVector.Set(0, 0, 0); // 움직이는게 더멀어지는경우 -> 다도착했다는 의미로 더 안움직이게
+                    DoMove.Set(0, 0, 0);
+                }
+                WorldPos = WorldPos + (DoMove); 
+                transform.Translate(DoMove, Space.World);
+                if (Time.time - movingTime >= 8.0f)
+                {
+                    WorldChange = 2;
+                    movingTime = Time.time;
+                    IsMove = false;
+                }
             }
         }
         else if (WorldChange == 2)
         {
-            MovingVector = (OriginPos - WorldPos) * Time.deltaTime * 0.2f;
-            WorldPos = WorldPos + (MovingVector);
-            transform.Translate(MovingVector,Space.World);
-            if ((MovingVector.sqrMagnitude) < 0.01f * Time.deltaTime * 0.2f)
+            if (IsMove == false)
             {
-                WorldChange = 0;
+                if (Random.value > 0.995f)
+                {
+                    IsMove = true;
+                    MovingVector = (OriginPos - WorldPos);
+                }
+                if (Time.time - movingTime >= 4.0f) //이동 못하고 있으면 4초후에는 출발
+                {
+                    IsMove = true;
+                    MovingVector = (OriginPos - WorldPos);
+                }
+            }
+            if (IsMove == true)
+            {
+                Vector3 DoMove = MovingVector * Time.deltaTime * 0.5f; //2초후에 도달
+                if ((OriginPos - WorldPos).sqrMagnitude < (OriginPos - (WorldPos + DoMove)).sqrMagnitude)
+                {
+                    MovingVector.Set(0, 0, 0); // 움직이는게 더멀어지는경우 -> 다도착했다는 의미로 더 안움직이게
+                    DoMove.Set(0, 0, 0);
+                }
+                WorldPos = WorldPos + (DoMove);
+                transform.Translate(DoMove, Space.World);
+                if (Time.time - movingTime >= 8.0f)
+                {
+                    WorldChange = 2;
+                    movingTime = Time.time;
+                    IsMove = false;
+                }
             }
         }
         else

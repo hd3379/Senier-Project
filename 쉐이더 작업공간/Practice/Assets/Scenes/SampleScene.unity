@@ -348,6 +348,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a75e0be201ab4934c8e02d63c6d26af6, type: 3}
+--- !u!23 &575411883 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2300000, guid: e7ba6850887ae694a970af5f171fa6d5,
+    type: 3}
+  m_PrefabInstance: {fileID: 2071275476}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &704639541 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: e7ba6850887ae694a970af5f171fa6d5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1485940979}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &704639546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704639541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b5fa71c9e35e2e489a8d018564b0a94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Pyramid: {fileID: 1026805142}
+  renderer: {fileID: 575411883}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,7 +478,6 @@ GameObject:
   - component: {fileID: 799657262}
   - component: {fileID: 799657261}
   - component: {fileID: 799657260}
-  - component: {fileID: 799657259}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -460,20 +485,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &799657259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 799657258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b5fa71c9e35e2e489a8d018564b0a94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Pyramid: {fileID: 1026805142}
-  renderer: {fileID: 799657261}
 --- !u!65 &799657260
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -884,32 +895,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 15
   RotateSpeed: 100
---- !u!1 &1132237047 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: a75e0be201ab4934c8e02d63c6d26af6,
-    type: 3}
-  m_PrefabInstance: {fileID: 568046281}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &1132237049 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 2300000, guid: a75e0be201ab4934c8e02d63c6d26af6,
-    type: 3}
-  m_PrefabInstance: {fileID: 568046281}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1132237052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1132237047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b5fa71c9e35e2e489a8d018564b0a94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Pyramid: {fileID: 1026805142}
-  renderer: {fileID: 1132237049}
+  BlackhallPos: {x: 0, y: 0, z: 0}
 --- !u!1 &1231241091
 GameObject:
   m_ObjectHideFlags: 0
@@ -1004,32 +990,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: -90.99999, y: 82.849, z: -82.849}
---- !u!1 &1307720804 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: e7ba6850887ae694a970af5f171fa6d5,
-    type: 3}
-  m_PrefabInstance: {fileID: 826401807}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &1307720806 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 2300000, guid: e7ba6850887ae694a970af5f171fa6d5,
-    type: 3}
-  m_PrefabInstance: {fileID: 826401807}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1307720809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1307720804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b5fa71c9e35e2e489a8d018564b0a94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Pyramid: {fileID: 1026805142}
-  renderer: {fileID: 1307720806}
 --- !u!1001 &1410176268
 PrefabInstance:
   m_ObjectHideFlags: 0
