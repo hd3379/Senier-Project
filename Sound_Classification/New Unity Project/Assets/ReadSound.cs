@@ -9,18 +9,19 @@ public class ReadSound : MonoBehaviour
 {
     public AudioClip aud;
     float[] audSignalData;
+    float[,] frames;
     // Start is called before the first frame update
     void Start()
     {
         audSignalData = new float[aud.samples * aud.channels];
         aud.GetData(audSignalData, 0);
-        print(aud.samples); //signal 수
-        print(aud.channels); //채널수
-        print(aud.length); //오디오 길이(seconds 단위의 시간)
-        print(aud.frequency); //오디오 주파수
+        print("signal 수" + aud.samples); //signal 수
+        print("채널수 " + aud.channels); //채널수
+        print("오디오 길이 (초)" + aud.length); //오디오 길이(seconds 단위의 시간)
+        print("오디오 주파수" + aud.frequency); //오디오 주파수
 
-        //PREEMPHASIS(aud.samples);
-        Framing();
+        PreEmpasis();
+        Framing(); //Windowing()은 Framing안에서
     }
 
     // Update is called once per frame
@@ -32,13 +33,12 @@ public class ReadSound : MonoBehaviour
 /*사람 목소리가 고주파보다 저주파 에너지가 더 많은 경향때문에
 고주파 성분의 에너지를 조금 올려주면 음성인식 성능 개선이 된다고함
 그걸위한 PRE EMPHASIS */
-    void PREEMPHASIS() 
+    void PreEmpasis() 
     {
         float pre_emphasis = 0.97f;
         for(int i = 0; i < aud.samples; ++i)
         {
             audSignalData[i] = audSignalData[i] - pre_emphasis * audSignalData[i-1];
-            //print(audSignalData[i]);
         }
     }
 
@@ -66,7 +66,8 @@ public class ReadSound : MonoBehaviour
             else
                 pad_signal[i] = 0;
         }
-        float[,] frames = new float[num_frames, frame_length];
+
+        frames = new float[num_frames, frame_length];
         for (int i = 0; i < num_frames; ++i)
         {
             for (int j = 0; j < frame_length; ++j)
@@ -74,6 +75,21 @@ public class ReadSound : MonoBehaviour
                 frames[i, j] = pad_signal[j + (i * frame_step)];
             }
         }
-//이 새로 만든 프레임들은 25ms 단위로 끊되 일정 구간 겹쳐있는 상태로 2차배열로 만들었다.
+        Windowing(num_frames, frame_length);
+    }
+
+/*잘게 잘르는 framing을 거친 frames들을 windowing 할건데 개별 프레임에 Hamming Window를
+ 적용하면 양 끝 부분은 0애 가까운 값이 곱해져 그 값이 작아집니다. 이 과정을 통해 우리가 원하는
+주파수 영역대의 정보는 더 캐치하고 버려야 하는 주파수 영역대 정보도 일부 캐치할수 있게 됩니다.
+ */
+    void Windowing(int num_frames,int frame_length)
+    {
+        for (int i = 0; i < num_frames; ++i)
+        {
+            for (int j = 0; j < frame_length; ++j)
+            {
+                frames[i,j] *= (float)(0.54 - (0.46 * Mathf.Cos((2 * Mathf.PI * j) / (frame_length - 1))));
+            }
+        }
     }
 }
