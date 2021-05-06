@@ -4,6 +4,9 @@ using UnityEngine;
 using System.IO;
 using System.Threading;
 using System.Linq;
+using System.Numerics;
+using System;
+
 
 public class ReadSound : MonoBehaviour
 {
@@ -20,8 +23,13 @@ public class ReadSound : MonoBehaviour
         print("오디오 길이 (초)" + aud.length); //오디오 길이(seconds 단위의 시간)
         print("오디오 주파수" + aud.frequency); //오디오 주파수
 
-        PreEmpasis();
-        Framing(); //Windowing()은 Framing안에서
+        //PreEmpasis();
+        //Framing(); //Windowing()은 Framing안에서
+        Complex[] sampleArray = { 0.2, 0.7, 0.5, 0.3, 0.1,0,0,0};
+        Complex[] input = new Complex[8];
+        input = sampleArray;
+        Complex[] output = null;
+        fft(input, ref output);
     }
 
     // Update is called once per frame
@@ -89,6 +97,90 @@ public class ReadSound : MonoBehaviour
             for (int j = 0; j < frame_length; ++j)
             {
                 frames[i,j] *= (float)(0.54 - (0.46 * Mathf.Cos((2 * Mathf.PI * j) / (frame_length - 1))));
+            }
+        }
+    }
+    /*FourerTransform = 시간 도메인의 음성 신호를 주파수 도메인으로 바꾸는 과정
+     주기함수 또는 신호를 삼각함수로 표현하는 과정?
+    임의의 입력 신호를 주기함수들의 합으로 분해하여 표현 하는 것이라 한다.
+     */
+    //fft 값이 약간 이상할 확률 높음 일단 진행해 보겠다.
+    void fft(Complex[] input, ref Complex[] output)
+    {
+        if (input.Length < 2)
+        {
+            return;
+        }
+        int N = input.Length;
+        N = 1 << ((int)Mathf.Round((Mathf.Log(N, 2))) );
+        int rounds = (int)Mathf.Log(N, 2);
+        
+        if (output == null || output.Length != N)
+        {
+            output = new Complex[N];
+            output.Initialize();
+        }
+
+        permutate(rounds, input,ref output);
+        for (int i = 0; i < 5; i++)
+        {
+            print(i + "= " +output[i]);
+        }
+
+        Complex[] temp = new Complex[N];
+        Complex[] Swaptmp = new Complex[N];
+
+        temp = output;
+        for(int q = rounds-1; q >= 0; q--)
+        {
+            Swaptmp = output;
+            output = temp;
+            temp = Swaptmp;
+            computeFFT(q, temp,ref output);
+        }
+
+
+        temp.Initialize();
+        for (int i = 0; i < output.Length; ++i)
+        {
+            print("전"+output[i]);
+            output[i] = output[i]/ Complex.Pow(Mathf.Sqrt(N), 0.0);
+            print("후"+output[i]);
+        }
+    }
+
+    int Reverse(int n, int k)
+    {
+        int r, i;
+        for (r = 0, i = 0; i < k; ++i)
+            r |= ((n >> i) & 1) << (k - i - 1);
+        return r;
+    }
+    void permutate(int q, Complex[] input,ref Complex[] output)
+    {
+        for( int  i = 0; i < (1 << q); ++i)
+        {
+            output[i] = input[Reverse(i,q)];
+        }
+    }
+    void computeFFT(int q, Complex[] input, ref Complex[] output)
+    {
+        int countBlock = 1 << q;
+        int lenBlock = output.Length / countBlock;
+
+        for(int baseIdx = 0; baseIdx < lenBlock/2; baseIdx++)
+        {
+            Complex w = Complex.FromPolarCoordinates(1.0, -(
+                Mathf.PI * baseIdx) / (lenBlock / 2));
+            for(int block = 0; block < countBlock; block++)
+            {
+                int idx = baseIdx + block * lenBlock;
+                Complex a = (Complex)input[idx];
+                Complex b = (Complex)input[idx + lenBlock/2];
+                Complex wB = Complex.Multiply(w, b);
+
+                output[idx] = Complex.Add(a, wB);
+                output[idx + lenBlock / 2] = Complex.Subtract(a, wB);
             }
         }
     }
