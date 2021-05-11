@@ -18,6 +18,7 @@ public class ReadSound : MonoBehaviour
     float[] audSignalData;
     float[,] frames;
     float[,] fft_frames;
+    float[,] FilterBank;
     int num_frames;
     int frame_step;
     int frame_length;
@@ -76,11 +77,25 @@ public class ReadSound : MonoBehaviour
 
                 fft_frames[i,j] = pow_frames[j];
             }
-            //print(fft_frames[i, 0]);
         }
 
         int num_ceps = 12;
         MelScaleFilter(aud.frequency);
+
+        FilterBank = DCTTransform(FilterBank.GetLength(0), FilterBank.GetLength(1), FilterBank);
+
+
+        //2~13번째 주파수 영역대의 열벡터들만 있으면 구분이 된다고 한다.
+        float[,] mfcc = new float[num_frames, num_ceps];
+        for(int i = 0; i < num_frames; ++i)
+        {
+            for(int j = 1; j < num_ceps + 1; ++j)
+            {
+                mfcc[i, j-1] = FilterBank[i, j];
+                if(i == 0)
+                    print(mfcc[i, j-1]);
+            }
+        }
     }
 
     static float[] ToComplex(float[] real)
@@ -304,19 +319,25 @@ public class ReadSound : MonoBehaviour
                 fbank[m - 1, k] = (bin[m + 1] - k) / (bin[m + 1] - bin[m]); 
             }
         }
+        FilterBank = new float[num_frames, nfilt];
+        FilterBank = Multm1andm2T(fft_frames, fbank);
 
-        fft_frames = Multm1andm2T(fft_frames, fbank);
+        //Log_Mel Spectrum 사람의 소리인식은 로그 스케일에 가깝다고한다.
+        for(int i = 0; i < num_frames; ++i)
+        {
+            for (int j = 0; j< nfilt; ++j)
+            {
+                FilterBank[i,j] = 20 * Mathf.Log10(FilterBank[i,j]);
+            }
+        }
     }
 
-    public static float[,] Multm1andm2T(float[,] m1, float[,] m2)
+    public float[,] Multm1andm2T(float[,] m1, float[,] m2)
     {
         float[,] result = new float[m1.GetLength(0), m2.GetLength(0)];
 
-        print(result.GetLength(0));
-        print(result.GetLength(1));
         if (m1.GetLength(1) == m2.GetLength(1))
         {
-            print("hi");
             for (int i = 0; i < result.GetLength(0); i++)
             {
                 for (int j = 0; j < result.GetLength(1); j++)
@@ -330,27 +351,44 @@ public class ReadSound : MonoBehaviour
         return result;
     }
 
-    public double[,] GenerateDCTmatrix(int order)
+    public float[,] DCTTransform(int M, int N, float[,] matrix)
     {
-        int i, j;
-        int N;
-        N = order;
-        double alpha;
-        double denominator;
-        double[,] DCTCoeff = new double[N, N];
-        for (j = 0; j <= N - 1; j++)
-        {
-            DCTCoeff[0, j] = Math.Sqrt(1 / (double)N);
-        }
-        alpha = Math.Sqrt(2 / (double)N);
-        denominator = (double)2 * N;
-        for (j = 0; j <= N - 1; j++)
-            for (i = 1; i <= N - 1; i++)
-            {
-                DCTCoeff[i, j] = alpha * Math.Cos(((2 * j + 1) *
-            i * 3.14159) / denominator);
-            }
+        int i, j, k, l;
 
-        return (DCTCoeff);
+        // dct will store the discrete cosine transform 
+        float[,] dct = new float[M,N];
+
+        float ci, cj, dct1, sum;
+
+        for (i = 0; i < M; i++)
+        {
+            for (j = 0; j < N; j++)
+            {
+                if (i == 0)
+                    ci = 1 / Mathf.Sqrt(M);
+                else
+                    ci = Mathf.Sqrt(2) / Mathf.Sqrt(M);
+
+                if (j == 0)
+                    cj = 1 / Mathf.Sqrt(N);
+                else
+                    cj = Mathf.Sqrt(2) / Mathf.Sqrt(N);
+
+                sum = 0;
+                for (k = 0; k < M; k++)
+                {
+                    for (l = 0; l < N; l++)
+                    {
+                        dct1 = matrix[k,l] *
+                            Mathf.Cos((2 * k + 1) * i * Mathf.PI / (2 * M)) *
+                            Mathf.Cos((2 * l + 1) * j * Mathf.PI / (2 * N));
+                        sum = sum + dct1;
+                    }
+                }
+                dct[i,j] = ci * cj * sum;
+            }
+        }
+
+        return (dct);
     }
 }
