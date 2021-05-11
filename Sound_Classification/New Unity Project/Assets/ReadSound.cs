@@ -17,9 +17,11 @@ public class ReadSound : MonoBehaviour
     public AudioClip aud;
     float[] audSignalData;
     float[,] frames;
+    float[,] fft_frames;
     int num_frames;
     int frame_step;
     int frame_length;
+    int NFFT;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,36 +38,49 @@ public class ReadSound : MonoBehaviour
         print("오디오 주파수" + aud.frequency); //오디오 주파수
 
         PreEmpasis();
-        Framing(); //Windowing()은 Framing안에서
-                   //이러고 fft 적용
-        Complex[] output = null;
-        Complex[] input = new Complex[frame_length];
-        float[] mag_frames = new float[num_frames];
-        float[] pow_frames = new float[num_frames];
+        Framing();
+        Windowing();
+
+        if (frame_length < 2)
+        {
+            return;
+        }
+        int N = frame_length;
+        N = 1 << ((int)Mathf.Round((Mathf.Log(N, 2))));
+        NFFT = N;
+
+        Complex[] output = new Complex[N];
+        fft_frames = new float[num_frames, N];
+        output.Initialize();
+
+        Complex[] input = new Complex[N];
+        float[] mag_frames = new float[N];
+        float[] pow_frames = new float[N];
 
         for (int i = 0; i < num_frames; ++i)
         {
-            for (int j = 0; j < frame_length; ++j)
+            for (int j = 0; j < N; ++j)
             {
+                if(j >= frame_length)
+                {
+                    input[j] = 0;
+                    continue;
+                }
                 input[j] = frames[i, j];
             }
-            dft(input, ref output);
-            for (int j = 0; j < frame_length; ++j)
+            fft(input, ref output);
+            for (int j = 0; j < N; ++j)
             {
                 mag_frames[j] = (float)output[j].Magnitude; //위상정보는 없애고 진폭 정보만 남김
                 pow_frames[j] = (float)(Mathf.Pow(mag_frames[j], 2) / mag_frames.Length);//power 스펙트럼으로 바꿔줌
 
-                frames[i,j] = pow_frames[j];
-                print(frames[i, j]);
+                fft_frames[i,j] = pow_frames[j];
             }
+            //print(fft_frames[i, 0]);
         }
 
         int num_ceps = 12;
-        // float[,] filter_banks = new float[num_frames, frame_length] = pow_frames * fbank.T;
-        /*for(int i = 0; i < NFFT; ++i)
-        {
-
-        }*/
+        MelScaleFilter(aud.frequency);
     }
 
     static float[] ToComplex(float[] real)
@@ -131,14 +146,13 @@ public class ReadSound : MonoBehaviour
                 frames[i, j] = pad_signal[j + (i * frame_step)];
             }
         }
-        Windowing(num_frames, frame_length);
     }
 
     /*잘게 잘르는 framing을 거친 frames들을 windowing 할건데 개별 프레임에 Hamming Window를
      적용하면 양 끝 부분은 0애 가까운 값이 곱해져 그 값이 작아집니다. 이 과정을 통해 우리가 원하는
     주파수 영역대의 정보는 더 캐치하고 버려야 하는 주파수 영역대 정보도 일부 캐치할수 있게 됩니다.
      */
-    void Windowing(int num_frames, int frame_length)
+    void Windowing()
     {
         for (int i = 0; i < num_frames; ++i)
         {
@@ -158,6 +172,7 @@ public class ReadSound : MonoBehaviour
         int N = input.Length;
         N = 1 << ((int)Mathf.Round((Mathf.Log(N, 2))) + 1);
         int rounds = (int)Mathf.Log(N, 2);
+        //NFFT = frame_length;
 
         if (output == null || output.Length != N)
         {
@@ -188,28 +203,12 @@ public class ReadSound : MonoBehaviour
     //fft 값이 약간 이상할 확률 높음 일단 진행해 보겠다.
     void fft(Complex[] input, ref Complex[] output)
     {
-        if (input.Length < 2)
-        {
-            return;
-        }
-        int N = input.Length;
-        N = 1 << ((int)Mathf.Round((Mathf.Log(N, 2))) + 1);
-        int rounds = (int)Mathf.Log(N, 2);
 
-        if (output == null || output.Length != N)
-        {
-            output = new Complex[N];
-            output.Initialize();
-        }
-
+        int rounds = (int)Mathf.Log(NFFT, 2);
         permutate(rounds, input, ref output);
-        for (int i = 0; i < 5; i++)
-        {
-            print(i + "= " + output[i]);
-        }
 
-        Complex[] temp = new Complex[N];
-        Complex[] Swaptmp = new Complex[N];
+        Complex[] temp = new Complex[NFFT];
+        Complex[] Swaptmp = new Complex[NFFT];
 
         temp = output;
         for (int q = rounds - 1; q >= 0; q--)
@@ -222,11 +221,9 @@ public class ReadSound : MonoBehaviour
 
 
         temp.Initialize();
-        for (int i = 0; i < output.Length; ++i)
+        for (int i = 0; i < NFFT; ++i)
         {
-            print("전" + output[i]);
-            output[i] = output[i] / Complex.Pow(Mathf.Sqrt(N), 0.0);
-            print("후" + output[i]);
+            output[i] = output[i] / Complex.Pow(Mathf.Sqrt(NFFT), 0.0);
         }
     }
 
@@ -267,31 +264,31 @@ public class ReadSound : MonoBehaviour
         }
     }
 
-    void MelScaleFilter(float fre, int NFFT)
+    void MelScaleFilter(float fre)
     {
         int nfilt = 40;
         float low_freq_mel = 0;
-        float high_freq_mel = (2595 * Mathf.Log10(1 + (fre / 2) / 200)); //Convert Hz to me
+        float high_freq_mel = (2595 * Mathf.Log10(1 + (fre) / 700)); //Convert Hz to me
         float[] mel_points = new float[nfilt + 2];
         float mel_point = low_freq_mel;
         for (int i = 0; i < nfilt + 2; ++i) {
             mel_points[i] = mel_point;
-            mel_point += ((high_freq_mel - low_freq_mel) / nfilt + 2);
+            mel_point += ((high_freq_mel - low_freq_mel) / (nfilt + 2));
         } // Equally spaced in Mel scale
 
         float[] hz_points = new float[nfilt + 2];
         for (int i = 0; i < nfilt + 2; ++i)
         {
-            hz_points[i] = (700 * (Mathf.Pow(10, (mel_points[i] / 2595)) - 1));
+            hz_points[i] = (700 * (Mathf.Pow(10, (mel_points[i] / (float)2595)) - 1));
         }// Convert Mel to Hz
 
         float[] bin = new float[nfilt + 2];
         for (int i = 0; i < nfilt + 2; ++i)
         {
-            Mathf.Floor((NFFT + 1) * hz_points[i] / fre);
+            bin[i] = Mathf.Floor((NFFT + 1) * hz_points[i] / fre);
         }
 
-        float[,] fbank = new float[nfilt, (int)Mathf.Floor(NFFT / 2) + 1];
+        float[,] fbank = new float[nfilt, (int)NFFT];
         int f_m_minus, f_m, f_m_plus;
         for (int m = 1; m < nfilt + 1; ++m)
         {
@@ -304,9 +301,33 @@ public class ReadSound : MonoBehaviour
             }
             for (int k = f_m; k < f_m_plus; ++k)
             {
-                fbank[m - 1, k] = (bin[m + 1] - k) / (bin[m + 1] - bin[m]); }
+                fbank[m - 1, k] = (bin[m + 1] - k) / (bin[m + 1] - bin[m]); 
+            }
         }
 
+        fft_frames = Multm1andm2T(fft_frames, fbank);
+    }
+
+    public static float[,] Multm1andm2T(float[,] m1, float[,] m2)
+    {
+        float[,] result = new float[m1.GetLength(0), m2.GetLength(0)];
+
+        print(result.GetLength(0));
+        print(result.GetLength(1));
+        if (m1.GetLength(1) == m2.GetLength(1))
+        {
+            print("hi");
+            for (int i = 0; i < result.GetLength(0); i++)
+            {
+                for (int j = 0; j < result.GetLength(1); j++)
+                {
+                    result[i, j] = 0;
+                    for (int k = 0; k < m1.GetLength(1); k++)
+                        result[i, j] = result[i, j] + m1[i, k] * m2[j, k];
+                }
+            }
+        }
+        return result;
     }
 
     public double[,] GenerateDCTmatrix(int order)
