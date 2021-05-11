@@ -1,0 +1,8 @@
+1.그립 가능한 물체로 변경하려면 
+  Rigidbody,collider,grabbable(스크립트) 추가 -> 뒤집어지지않는 부드러운 그립 연구필요
+
+2.마우스 상하반전시 
+VREmulator.cs ->  mouseRotationY -= Input.GetAxis("Mouse Y") * MouseSensitivityY; (부호 바꿔주기)
+
+3.vr기기의 메인 시야인 메인플레이어에게 따라오는 UI를 추가하려면 Rotate with HMD 추가후 PlayerController값 주기
+
