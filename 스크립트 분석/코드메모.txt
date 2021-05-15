@@ -6,3 +6,7 @@ VREmulator.cs ->  mouseRotationY -= Input.GetAxis("Mouse Y") * MouseSensitivityY
 
 3.vr기기의 메인 시야인 메인플레이어에게 따라오는 UI를 추가하려면 Rotate with HMD 추가후 PlayerController값 주기
 
+4.enter(1번충돌) stay(충돌지속) exit(충돌 종료)
+
+5.collisioncheck 오브젝트에서 모든 충돌 처리 
+
