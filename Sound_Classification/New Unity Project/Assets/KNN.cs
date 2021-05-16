@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class KNN : MonoBehaviour
 {
+
     float[,] DataSet;
     int[] DataSet_Index;
-    // Start is called before the first frame update
+    int num_ceps = 12; //data.GetLength(1) 의도대로 넘어왔으면 12임
+
     int Classification(float[,] Newdata)  //0. 아무소리안냄(소음), 1. 인벤토리, 2. 시간이동
     {
         int num_frames = Newdata.GetLength(0);
-        int num_ceps = 12; //data.GetLength(1) 의도대로 넘어왔으면 12임
         int k = 3; //k의 범위 선택(가까운 상대를 몇명이나 검색할 것인지)
 
 
@@ -29,22 +31,22 @@ public class KNN : MonoBehaviour
         for (int i = 0; i < num_frames; ++i)
         {
             ceps_max = 0;
-            for(int j = 0; j < num_ceps; ++j)
+            for (int j = 0; j < num_ceps; ++j)
             {
                 //min값 초기화
-                for(int w= 0; w < k; ++w)
+                for (int w = 0; w < k; ++w)
                 {
                     min[w] = 99999;
                     neighbors_index[w] = 0;
                 }
                 //데이터를 싹 돌며 가까운 이웃 검색
-                for (int q = 0; q < DataSet.GetLength(1); ++q)
+                for (int q = 0; q < DataSet.GetLength(0); ++q)
                 {
-                    for(int w = 0; w < k; ++w)
+                    for (int w = 0; w < k; ++w)
                     {
-                        if(min[w] > Mathf.Abs(Newdata[i,j] -DataSet[j, q]))
+                        if (min[w] > Mathf.Abs(Newdata[i, j] - DataSet[q, j]))
                         {
-                            min[w] = Mathf.Abs(Newdata[i, j] - DataSet[j, q]);
+                            min[w] = Mathf.Abs(Newdata[i, j] - DataSet[q, j]);
                             neighbors_index[w] = DataSet_Index[q];
                             break;
                         }
@@ -55,7 +57,7 @@ public class KNN : MonoBehaviour
                 max = 0;
                 for (int w = 0; w < k; ++w)
                 {
-                    point[neighbors_index[w]] += (k-w);
+                    point[neighbors_index[w]] += (k - w);
                     if (point[neighbors_index[w]] > max)
                     {
                         max = point[neighbors_index[w]];
@@ -64,7 +66,7 @@ public class KNN : MonoBehaviour
                 }
                 //지역당선
                 ceps_point[maxindex]++;
-                if(ceps_point[maxindex] < ceps_max)
+                if (ceps_point[maxindex] < ceps_max)
                 {
                     ceps_max = ceps_point[maxindex];
                     ceps_maxindex = maxindex;
@@ -79,17 +81,46 @@ public class KNN : MonoBehaviour
                 frames_maxindex = ceps_maxindex;
             }
         }
-
         return frames_maxindex;
     }
 
-    int ClassificationSetting(float[,] Newdata, float answer)  //0. 아무소리안냄(소음), 1. 인벤토리, 2. 시간이동
+    void ClassificationSetting(float[,] Newdata, float answer)  //0. 아무소리안냄(소음), 1. 인벤토리, 2. 시간이동
     {
-        int num_frames = Newdata.GetLength(0);
-        int num_ceps = 12;
+        FileStream fs = new FileStream("SoundDataFile.txt", FileMode.OpenOrCreate);
+        BinaryWriter bw = new BinaryWriter(fs);
+        BinaryReader br = new BinaryReader(fs);
 
-        float[,] DataSet = new float[12, num_frames/*총 데이터 숫자만큼*/];
-        int[] DataSet_Index = new int[num_frames/*총 데이터숫자만큼*/];
-        return 0;
+        int dataSize = br.ReadInt32();
+        DataSet = new float[dataSize, num_ceps];
+        DataSet_Index = new int[dataSize];
+        for (int i = 0; i < dataSize; ++i)
+        {
+            for (int j = 0; j < num_ceps; ++j)
+            {
+                DataSet[i, j] = (float)br.ReadDouble();
+            }
+            DataSet_Index[i] = br.ReadInt32();
+        }
+
+        int num_frames = Newdata.GetLength(0);
+        int new_dataSize = num_frames * num_ceps;
+
+        bw.Write(new_dataSize);
+        for (int i = 0; i < dataSize; ++i)
+        {
+            for (int j = 0; j < num_ceps; ++j)
+            {
+                bw.Write((double)DataSet[i, j]);
+            }
+            bw.Write(DataSet_Index[i]);
+        }
+        for(int i=0; i< num_frames; ++i)
+        {
+            for ( int j=0; j< num_ceps; ++j)
+            {
+                bw.Write((double)Newdata[i, j]);
+            }
+            bw.Write(answer);
+        }
     }
 }
