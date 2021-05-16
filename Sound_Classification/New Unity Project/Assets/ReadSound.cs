@@ -75,11 +75,10 @@ public class ReadSound : MonoBehaviour
                 mag_frames[j] = (float)output[j].Magnitude; //위상정보는 없애고 진폭 정보만 남김
                 pow_frames[j] = (float)(Mathf.Pow(mag_frames[j], 2) / mag_frames.Length);//power 스펙트럼으로 바꿔줌
                 fft_frames[i,j] = pow_frames[j];
-                
             }
         }
 
-        int num_ceps = 12;
+        
         MelScaleFilter(aud.frequency);
 
 
@@ -87,7 +86,7 @@ public class ReadSound : MonoBehaviour
         //이과정에서 버리는 정보가 많아 최근에는 로그멜 스펙트럼을 그냥 쓰는 트랜드라고 한다.
         //FilterBank = DCTTransform(FilterBank.GetLength(0), FilterBank.GetLength(1), FilterBank);
 
-
+        int num_ceps = 12;
         //2~13번째 주파수 영역대의 열벡터들만 있으면 구분이 된다고 한다.
         float[,] result = new float[num_frames, num_ceps];
         for(int i = 0; i < num_frames; ++i)
@@ -95,8 +94,6 @@ public class ReadSound : MonoBehaviour
             for(int j = 1; j < num_ceps + 1; ++j)
             {
                 result[i, j-1] = FilterBank[i, j];
-                //if(i == 0)
-                    //print(result[i, j-1]);
             }
         }
     }
