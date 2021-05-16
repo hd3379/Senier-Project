@@ -6,7 +6,6 @@ using System.Threading;
 using System.Linq;
 using System.Numerics;
 using System;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +24,7 @@ public class ReadSound : MonoBehaviour
     int frame_step;
     int frame_length;
     int NFFT;
+    public static ReadSound staticReadSound = new ReadSound();
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +32,13 @@ public class ReadSound : MonoBehaviour
         Answer = KNN.staticKNN.Classification(result); //분류용
         print(Answer);
         //KNN.staticKNN.ClassificationSetting(result, Answer); //데이터 저장용
+    }
+
+    public void Classification()
+    {
+        MFCC();
+        Answer = KNN.staticKNN.Classification(result); //분류용
+        print(Answer);
     }
 
     void MFCC()
