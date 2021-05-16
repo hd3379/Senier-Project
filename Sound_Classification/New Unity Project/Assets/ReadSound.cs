@@ -15,10 +15,12 @@ using System.Threading.Tasks;
 public class ReadSound : MonoBehaviour
 {
     public AudioClip aud;
+    public int Answer; // 0.잡소음, 1.인벤토리, 2.시간이동
     float[] audSignalData;
     float[,] frames;
     float[,] fft_frames;
     float[,] FilterBank;
+    float[,] result;
     int num_frames;
     int frame_step;
     int frame_length;
@@ -27,6 +29,9 @@ public class ReadSound : MonoBehaviour
     void Start()
     {
         MFCC();
+        Answer = KNN.staticKNN.Classification(result); //분류용
+        print(Answer);
+        //KNN.staticKNN.ClassificationSetting(result, Answer); //데이터 저장용
     }
 
     void MFCC()
@@ -88,7 +93,7 @@ public class ReadSound : MonoBehaviour
 
         int num_ceps = 12;
         //2~13번째 주파수 영역대의 열벡터들만 있으면 구분이 된다고 한다.
-        float[,] result = new float[num_frames, num_ceps];
+        result = new float[num_frames, num_ceps];
         for(int i = 0; i < num_frames; ++i)
         {
             for(int j = 1; j < num_ceps + 1; ++j)
@@ -295,6 +300,9 @@ public class ReadSound : MonoBehaviour
         {
             for (int j = 0; j< nfilt; ++j)
             {
+                if (FilterBank[i, j] == 0) {
+                    FilterBank[i, j] = 0.000001f;
+                }
                 FilterBank[i,j] = 20 * Mathf.Log10(FilterBank[i,j]);
             }
         }
