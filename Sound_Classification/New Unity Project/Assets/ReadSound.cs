@@ -74,26 +74,29 @@ public class ReadSound : MonoBehaviour
             {
                 mag_frames[j] = (float)output[j].Magnitude; //위상정보는 없애고 진폭 정보만 남김
                 pow_frames[j] = (float)(Mathf.Pow(mag_frames[j], 2) / mag_frames.Length);//power 스펙트럼으로 바꿔줌
-
                 fft_frames[i,j] = pow_frames[j];
+                
             }
         }
 
         int num_ceps = 12;
         MelScaleFilter(aud.frequency);
 
-        FilterBank = DCTTransform(FilterBank.GetLength(0), FilterBank.GetLength(1), FilterBank);
+
+        //DCT(역이산코사인변환) 을통해 푸리에 변환에 의해 생긴 상관관계를 해소 하는 과정을 가지는데
+        //이과정에서 버리는 정보가 많아 최근에는 로그멜 스펙트럼을 그냥 쓰는 트랜드라고 한다.
+        //FilterBank = DCTTransform(FilterBank.GetLength(0), FilterBank.GetLength(1), FilterBank);
 
 
         //2~13번째 주파수 영역대의 열벡터들만 있으면 구분이 된다고 한다.
-        float[,] mfcc = new float[num_frames, num_ceps];
+        float[,] result = new float[num_frames, num_ceps];
         for(int i = 0; i < num_frames; ++i)
         {
             for(int j = 1; j < num_ceps + 1; ++j)
             {
-                mfcc[i, j-1] = FilterBank[i, j];
-                if(i == 0)
-                    print(mfcc[i, j-1]);
+                result[i, j-1] = FilterBank[i, j];
+                //if(i == 0)
+                    //print(result[i, j-1]);
             }
         }
     }
@@ -178,39 +181,7 @@ public class ReadSound : MonoBehaviour
         }
     }
 
-    void dft (Complex[] input, ref Complex[] output)
-    {
-        if (input.Length < 2)
-        {
-            return;
-        }
-        int N = input.Length;
-        N = 1 << ((int)Mathf.Round((Mathf.Log(N, 2))) + 1);
-        int rounds = (int)Mathf.Log(N, 2);
-        //NFFT = frame_length;
-
-        if (output == null || output.Length != N)
-        {
-            output = new Complex[frame_length];
-            output.Initialize();
-        }
-
-        for (int i = 0; i < frame_length; i++)
-        {
-            Complex tmp = (Complex)(0.0);
-            for (int j = 0; j < frame_length; j++)
-            {
-                Complex wj = Complex.FromPolarCoordinates(1.0, -(2.0 * Mathf.PI * i * j) / N);
-                tmp = Complex.Add(tmp, Complex.Multiply(wj, input[j]));
-            }
-            output[i] = tmp;
-        }
-        
-        for (int i = 0; i < frame_length; ++i)
-        {
-            output[i] = output[i] / Complex.Pow(Mathf.Sqrt(N), 0.0);
-        }
-    }
+    
     /*FourerTransform = 시간 도메인의 음성 신호를 주파수 도메인으로 바꾸는 과정
      주기함수 또는 신호를 삼각함수로 표현하는 과정?
     임의의 입력 신호를 주기함수들의 합으로 분해하여 표현 하는 것이라 한다.
@@ -351,7 +322,42 @@ public class ReadSound : MonoBehaviour
         return result;
     }
 
-    public float[,] DCTTransform(int M, int N, float[,] matrix)
+    public static void Transform(double[] vector)
+    {
+        if (vector == null)
+            throw new NullReferenceException();
+        int n = vector.Length;
+        if (n <= 0 || ((n & (n - 1)) != 0))
+            throw new ArgumentException("Length must be power of 2");
+        Transform(vector, 0, n, new double[n]);
+    }
+
+
+    private static void Transform(double[] vector, int off, int len, double[] temp)
+    {
+        if (len == 1)
+            return;
+        int halfLen = len / 2;
+        for (int i = 0; i < halfLen; i++)
+        {
+            double x = vector[off + i];
+            double y = vector[off + len - 1 - i];
+            temp[off + i] = x + y;
+            temp[off + i + halfLen] = (x - y) / (Math.Cos((i + 0.5) * Math.PI / len) * 2);
+        }
+        Transform(temp, off, halfLen, vector);
+        Transform(temp, off + halfLen, halfLen, vector);
+        for (int i = 0; i < halfLen - 1; i++)
+        {
+            vector[off + i * 2 + 0] = temp[off + i];
+            vector[off + i * 2 + 1] = temp[off + i + halfLen] + temp[off + i + halfLen + 1];
+        }
+        vector[off + len - 2] = temp[off + halfLen - 1];
+        vector[off + len - 1] = temp[off + len - 1];
+    }
+
+
+    /*public float[,] DCTTransform(int M, int N, float[,] matrix) 느려서 못씀
     {
         int i, j, k, l;
 
@@ -390,5 +396,38 @@ public class ReadSound : MonoBehaviour
         }
 
         return (dct);
-    }
+    }*/
+    /*void dft (Complex[] input, ref Complex[] output) 느려서 못씀
+    {
+        if (input.Length < 2)
+        {
+            return;
+        }
+        int N = input.Length;
+        N = 1 << ((int)Mathf.Round((Mathf.Log(N, 2))) + 1);
+        int rounds = (int)Mathf.Log(N, 2);
+        //NFFT = frame_length;
+
+        if (output == null || output.Length != N)
+        {
+            output = new Complex[frame_length];
+            output.Initialize();
+        }
+
+        for (int i = 0; i < frame_length; i++)
+        {
+            Complex tmp = (Complex)(0.0);
+            for (int j = 0; j < frame_length; j++)
+            {
+                Complex wj = Complex.FromPolarCoordinates(1.0, -(2.0 * Mathf.PI * i * j) / N);
+                tmp = Complex.Add(tmp, Complex.Multiply(wj, input[j]));
+            }
+            output[i] = tmp;
+        }
+        
+        for (int i = 0; i < frame_length; ++i)
+        {
+            output[i] = output[i] / Complex.Pow(Mathf.Sqrt(N), 0.0);
+        }
+    }*/
 }
