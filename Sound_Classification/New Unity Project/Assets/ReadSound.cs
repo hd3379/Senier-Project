@@ -29,9 +29,7 @@ public class ReadSound : MonoBehaviour
     void Start()
     {
         MFCC();
-        Answer = KNN.staticKNN.Classification(result); //분류용
-        print(Answer);
-        //KNN.staticKNN.ClassificationSetting(result, Answer); //데이터 저장용
+        KNN.staticKNN.ClassificationSetting(result, Answer); //데이터 저장용
     }
 
     public void Classification()
