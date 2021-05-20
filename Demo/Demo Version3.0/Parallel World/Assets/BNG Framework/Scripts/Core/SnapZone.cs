@@ -302,19 +302,19 @@ namespace BNG
 
                 
             if (grabber != null) {
-                    handlemanager = GameObject.Find("HandleLookAt").GetComponent<Handlemanager>();
-                    //키와 접촉시 잠금/열림
-
-                        handlemanager.crushkey = false;//핸들매니저스크립트 중지
-
-                        //missiontext.text = "미션:2층과 3층의 외부계단 통로를 막아라"; //미션텍스트 수정
-
-                        Debug.Log("잠김");
                 if(HeldItem) {
 
                     
                     var g = HeldItem;
 
+                    handlemanager = GameObject.Find("HandleLookAt").GetComponent<Handlemanager>();
+                    //키와 접촉시 잠금/열림
+
+                        handlemanager.crushkey = false;//핸들매니저스크립트 중지
+
+                        missiontext.text = "미션:204호로가서 마음을 돌릴 수단 찾아보기"; //미션텍스트 수정
+
+                        Debug.Log("잠김");
 
                     if (DuplicateItemOnGrab) {
 
@@ -340,12 +340,12 @@ namespace BNG
                     else {
                         ReleaseAll();
                         
-                         // handlemanager.crushkey = true;//핸들매니저스크립트 시작
                         // Position next to grabber if somewhat far away
                         if (Vector3.Distance(g.transform.position, grabber.transform.position) > 0.2f) {
                             g.transform.position = grabber.transform.position;
                         }
-                      
+                         // handlemanager.crushkey = true;//핸들매니저스크립트 시작
+                        Debug.Log("열림");
                         // Do grab
                         grabber.GrabGrabbable(g);
 

@@ -10,7 +10,10 @@ namespace BNG {
         public Text missiontext; //미션 텍스트 수정변수
         private GameObject firstora;//미션1지점 오라 삭제용
         private GameObject secondora;//미션2지점 오라 삭제용
-
+        private GameObject thirdora;//미션3지점 오라 삭제용
+        private GameObject fourthora;//미션4지점 오라 삭제용
+        private GameObject fifthora;//미션5지점 오라 삭제용
+        private GameObject sixora;//미션6지점 오라 삭제용
 
         ScreenFader fader;
 
@@ -100,9 +103,6 @@ namespace BNG {
             }
         }
 
-        Handlemanager handlemanager;//키잠김 처리
-        GameObject keyob;//키 삭제
-
 
 
         void OnCollisionEnter(Collision col) {
@@ -127,22 +127,7 @@ namespace BNG {
                 collisions.Add(col.collider);
                 cols++;
             }
-            //자물쇠
-
-
-
-            //handlemanager = GameObject.Find("HandleLookAt").GetComponent<Handlemanager>();
-            ////키와 접촉시 잠금/열림
-
-            //if (col.gameObject.tag == "handle")//키와 접촉시
-            //{
-            //    handlemanager.crushkey = false;//핸들매니저스크립트 중지
-            //    missiontext.text = "미션:2층과 3층의 외부계단 통로를 막아라"; //미션텍스트 수정
-            //    keyob = GameObject.FindGameObjectWithTag("key");
-            //    Debug.Log("잠김");
-            //    Destroy(keyob);
-            //}
-
+            
             //----------------------------------------d------------------------------
 
 
@@ -160,7 +145,7 @@ namespace BNG {
             if (col.gameObject.tag == "mission2")//미션포인트2 도달시
             {
       
-                missiontext.text = "미션:2층과 3층 복도의 물건들을 이용해 외부계단 차단하기";
+                missiontext.text = "미션:2층의 물건들을 이용해 외부계단 차단하기";
 
                 secondora = GameObject.FindGameObjectWithTag("mission2");//미션포인트2 오라 받아오기
                 Destroy(secondora);//삭제
@@ -168,33 +153,35 @@ namespace BNG {
 
             }
 
-            //if (col.gameObject.tag == "mission3")//미션포인트2 도달시
-            //{
-                 // missiontext.text = "미션:창고에서 자물쇠를 찾아 옥상문 잠그기";
-        
+            if (col.gameObject.tag == "mission3")//미션포인트3 도달시
+            {
+                missiontext.text = "미션:3층의 물건들을 이용해 외부계단 차단하기";
 
-            //    secondora = GameObject.FindGameObjectWithTag("mission2");//미션포인트3 오라 받아오기
-            //    Destroy(secondora);//삭제
 
-            //}
+                thirdora = GameObject.FindGameObjectWithTag("mission3");//미션포인트3 오라 받아오기
+                Destroy(thirdora);//삭제
 
-            //if (col.gameObject.tag == "mission4")//미션포인트2 도달시
-            //{
-            //    missiontext.text = "계단에 떨어져있는 철사를 이용하여 성수의 집으로 들어가기";
+            }
 
-            //    secondora = GameObject.FindGameObjectWithTag("mission2");//미션포인트3 오라 받아오기
-            //    Destroy(secondora);//삭제
+          
+            if (col.gameObject.tag == "mission4")//미션포인트4 도달시
+            {
+                missiontext.text = "창고에서 열쇠를 찾아 옥상문 잠그기";
 
-            //}
 
-            //if (col.gameObject.tag == "mission5")//미션포인트2 도달시
-            //{
-            //    missiontext.text = "성수네 집에서 그의 마음을 돌릴 방법을 찾아보기 ";
+                fourthora = GameObject.FindGameObjectWithTag("mission4");//미션포인트3 오라 받아오기
+                Destroy(fourthora);//삭제
 
-            //    secondora = GameObject.FindGameObjectWithTag("mission2");//미션포인트3 오라 받아오기
-            //    Destroy(secondora);//삭제
+            }
 
-            //}
+            if (col.gameObject.tag == "mission5")//미션포인트5 도달시
+            {
+                missiontext.text = "204호로 가서 마음을 돌릴 수단 찾아보기 ";
+
+                fifthora = GameObject.FindGameObjectWithTag("mission5");//미션포인트3 오라 받아오기
+                Destroy(fifthora);//삭제
+
+            }
 
             //if (col.gameObject.tag == "mission6")//미션포인트2 도달시
             //{

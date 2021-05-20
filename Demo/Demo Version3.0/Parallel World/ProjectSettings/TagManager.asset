@@ -9,6 +9,9 @@ TagManager:
   - key
   - handle
   - mission3
+  - mission4
+  - mission5
+  - inventory
   layers:
   - Default
   - TransparentFX
