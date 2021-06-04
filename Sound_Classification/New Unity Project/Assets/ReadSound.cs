@@ -106,6 +106,22 @@ public class ReadSound : MonoBehaviour
                 result[i, j-1] = FilterBank[i, j];
             }
         }
+
+        // MeanNormalization() 이 후처리가 있으면 인식이 더 잘된다고 한다.
+        float FilterMean;
+        for (int i = 0; i < num_ceps; ++i)
+        {
+            FilterMean = 0;
+            for (int j = 0; j < num_frames; ++j)
+            {
+                FilterMean += result[j, i];
+            }
+            FilterMean /= num_ceps;
+            for (int j = 0; j < num_ceps; ++j)
+            {
+                result[j, i] -= (FilterMean + (float)(1e-8));
+            }
+        }
     }
 
     static float[] ToComplex(float[] real)
@@ -136,7 +152,6 @@ public class ReadSound : MonoBehaviour
             audSignalData[i] = audSignalData[i] - pre_emphasis * audSignalData[i - 1];
         }
     }
-
     /*분석 대상 시간 구간이 지나치게 길 경우 빠르게 변화하는 신호의 주파수 정보를 정확히 캐치하기 힘들다
     하여 신호가 변화하지 않다고 느낄만큼 짧은 시간단위로 쪼갤건데 이과정이 Framing*/
     void Framing()

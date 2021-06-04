@@ -33,8 +33,6 @@ public class KNN : MonoBehaviour
         }
 
 
-
-
         float[] min = new float[k];
         int[] neighbors_index = new int[k];
         int[] point = new int[k];
