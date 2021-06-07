@@ -25,7 +25,7 @@ public class Pyramid : MonoBehaviour
     void Update()
     { 
         //transform.Translate(TransRate * Time.deltaTime);
-        transform.Rotate(RotationRate * Time.deltaTime, Space.World) ;
+        //transform.Rotate(RotationRate * Time.deltaTime, Space.World) ;
     }
 
 }
