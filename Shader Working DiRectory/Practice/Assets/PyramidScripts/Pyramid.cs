@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Pyramid : MonoBehaviour
 {
+    int WorldChange;
     public float moveSpeed = 1.0f;
     public float RotateSpeed = 200.0f;
     Vector3 RotationRate;
     Vector3 WorldPos;
-    int WorldChange = 1;
     public Vector3 BlackhallPos;
     private Vector3 OriginPos;
     private Vector3 MovingVector;
@@ -26,12 +26,21 @@ public class Pyramid : MonoBehaviour
         WorldPos = this.gameObject.transform.position;
         OriginPos = WorldPos;
         IsMove = false;
+        WorldChange = 0;
         movingTime = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(WorldChange == 0)
+        {
+            if (Time.time - movingTime >= 2.0f) //2초후에 시작
+            {
+                movingTime = Time.time;
+                WorldChange = 1;
+            }
+        }
         if (WorldChange == 1)
         {
             if (IsMove == false)
@@ -91,9 +100,10 @@ public class Pyramid : MonoBehaviour
                 transform.Translate(DoMove, Space.World);
                 if (Time.time - movingTime >= 8.0f)
                 {
-                    WorldChange = 2;
+                    WorldChange = 3;
                     movingTime = Time.time;
                     IsMove = false;
+                    gameObject.SetActive(false);
                 }
             }
         }
@@ -103,4 +113,8 @@ public class Pyramid : MonoBehaviour
         transform.Rotate(RotationRate * Time.deltaTime, Space.Self);
     }
 
+    public void ChangeWorld()
+    {
+        WorldChange = 1;
+    }
 }

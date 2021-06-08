@@ -15,13 +15,17 @@ public class Moveable : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
     }
 
+    void Start()
+    {
+        agent.SetDestination(target.position);
+    }
 
     // Update is called once per frame
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            agent.SetDestination(target.position);
+            
         }
     }
 }

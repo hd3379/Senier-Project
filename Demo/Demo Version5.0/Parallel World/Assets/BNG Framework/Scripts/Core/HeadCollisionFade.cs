@@ -149,7 +149,7 @@ namespace BNG {
             {
                 missiontext.text = "관리자 : 앞에 보이는 사람을 따라서" +"\n" +"아파트로 들어가 봐";
 
-                questtext.text = "남자를 따라가라";
+                questtext.text = "       남자를 따라가라";
 
                 Invoke("m",6.0f);
 

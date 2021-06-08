@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5fa71c9e35e2e489a8d018564b0a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pyramid: {fileID: 1026805142}
+  pyramid: {fileID: 1026805142}
   renderer: {fileID: 0}
 --- !u!1001 &516479652
 PrefabInstance:
@@ -372,7 +372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5fa71c9e35e2e489a8d018564b0a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pyramid: {fileID: 1026805142}
+  pyramid: {fileID: 1026805142}
   renderer: {fileID: 575411883}
 --- !u!1 &705507993
 GameObject:
@@ -984,7 +984,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1231241091}
   m_LocalRotation: {x: -0.70784813, y: -0.0061235423, z: 0.0061233738, w: 0.7063115}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 500, y: 500, z: 500}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1249,7 +1249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5fa71c9e35e2e489a8d018564b0a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pyramid: {fileID: 1026805142}
+  pyramid: {fileID: 1026805142}
   renderer: {fileID: 2053954106}
 --- !u!136 &2053954105
 CapsuleCollider:
