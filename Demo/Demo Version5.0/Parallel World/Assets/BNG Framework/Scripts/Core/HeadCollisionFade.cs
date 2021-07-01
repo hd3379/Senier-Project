@@ -164,8 +164,8 @@ namespace BNG {
             if (col.gameObject.tag == "mission1")//미션포인트1 도달시
             {
                 missiontext.gameObject.SetActive(true);
-                missiontext.text = "관리자 : 남자는 204호에 사는 군 " + "\n" +//관리자 대사
-            " 그가 나오기 전까지 옥상 통로를 봉쇄하자 ";
+                missiontext.text = "관리자 : 남자는 204호에 사는 군.. " + "\n" +//관리자 대사
+                " 일단 아파트 구조를 파악해보자 ";
 
                 Invoke("m", 6.0f);
 
@@ -180,7 +180,7 @@ namespace BNG {
             {
 
                 missiontext.gameObject.SetActive(true);
-                missiontext.text = "관리자 : 입구가 막혀있네.." + "\n" + " 나무상자를 부술 물건을 찾아보자";
+                missiontext.text = "관리자 : 입구가 막혀있어" + "\n" + " 나무상자를 부술 물건을 찾아보자";
 
                 Invoke("m", 6.0f);
 
@@ -194,17 +194,20 @@ namespace BNG {
 
             if (col.gameObject.tag == "mission3")//미션포인트3 도달시
             {
-                missiontext.text = "미션:3층의 물건들을 이용해 외부계단 차단하기";
+                missiontext.text = "관리자: 통로들을 봉쇄하러 가보자구";
 
 
                 thirdora = GameObject.FindGameObjectWithTag("mission3");//미션포인트3 오라 받아오기
                 Destroy(thirdora);//삭제
 
-                Destroy(missiontext, 6.0f);//5초뒤 대사삭제
+
+                questtext.text = "상자를 부술 도구 찾기"; //미션창 텍스트
+                Invoke("m", 6.0f);
+
 
             }
 
-          
+
             if (col.gameObject.tag == "mission4")//미션포인트4 도달시
             {
                 missiontext.text = "창고에서 열쇠를 찾아 옥상문 잠그기";

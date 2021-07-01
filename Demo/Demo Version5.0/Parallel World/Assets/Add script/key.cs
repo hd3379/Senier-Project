@@ -27,21 +27,17 @@ namespace BNG
 
 
 
-            handlemanager = GameObject.Find("HandleLookAt").GetComponent<Handlemanager>();
+            handlemanager = GameObject.Find("rooftophandle").GetComponent<Handlemanager>();
             //키와 접촉시 잠금/열림
 
-            if (collision.gameObject.tag == "handle")//키와 접촉시
+            if (collision.gameObject.tag == "doorlock")//키와 접촉시
             {
                 handlemanager.crushkey = false;//핸들매니저스크립트 중지
 
-                missiontext.text = "미션:2층과 3층의 외부계단 통로를 막아라"; //미션텍스트 수정
-
-                keyob = GameObject.FindGameObjectWithTag("key");
-                keysnap = GameObject.FindGameObjectWithTag("handle");
+                missiontext.text = "좋았어. 옥상문을 제외한 통로가 " + "\n" + "있는지 찾아보자"; //미션텍스트 수정
+   
                 Debug.Log("잠김");
 
-                Destroy(keyob);
-                Destroy(keysnap);
             }
 
 
