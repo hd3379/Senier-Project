@@ -20,7 +20,7 @@ namespace BNG {
 
         Vector3 initialRot;
 
-       public bool crushkey = true;
+      
 
         void Start() {
             initialRot = transform.localEulerAngles;
@@ -31,8 +31,7 @@ namespace BNG {
 
         void Update() {
 
-            if (crushkey == true)
-            {
+            
                 if (HandleGrabbable != null && HandleGrabbable.BeingHeld)
                 {
                     Quaternion rot = Quaternion.LookRotation(HandleGrabbable.GetPrimaryGrabber().transform.position - transform.position);
@@ -56,7 +55,7 @@ namespace BNG {
                 }
 
             }
-        }
+        
 
 
        
