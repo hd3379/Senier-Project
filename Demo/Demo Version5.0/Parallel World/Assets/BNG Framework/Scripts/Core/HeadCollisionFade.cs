@@ -116,8 +116,6 @@ namespace BNG {
             
         }
 
-
-   
         void OnCollisionEnter(Collision col) {
             if(collisions == null) {
                 collisions = new List<Collider>();
@@ -238,6 +236,11 @@ namespace BNG {
             //}
 
             //미션3은 key script에서 처리
+
+            if(col.gameObject.tag == "ghost") //ghost 들에게 부딪혔을때
+            {
+                
+            }
 
    
         }
