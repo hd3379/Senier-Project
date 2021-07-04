@@ -207,19 +207,6 @@ namespace BNG {
 
             }
 
-
-            if (col.gameObject.tag == "mission4")//미션포인트4 도달시
-            {
-                missiontext.text = "창고에서 열쇠를 찾아 옥상문 잠그기";
-
-
-                fourthora = GameObject.FindGameObjectWithTag("mission4");//미션포인트3 오라 받아오기
-                Destroy(fourthora);//삭제
-
-                Destroy(missiontext, 6.0f);//5초뒤 대사삭제
-
-            }
-
             if (col.gameObject.tag == "mission5")//미션포인트5 도달시
             {
                 missiontext.text = "204호로 가서 마음을 돌릴 수단 찾아보기 ";

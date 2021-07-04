@@ -82,7 +82,7 @@ Material:
     - _VertexOcclusion: 1.09
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.1509434, g: 0.14595942, b: 0.14595942, a: 1}
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _DiffuseColour: {r: 0.27205884, g: 0.23497497, b: 0.22404847, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColour: {r: 0.5, g: 0.5, b: 0.5, a: 1}
