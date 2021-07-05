@@ -24,7 +24,7 @@ public class Ghost : MonoBehaviour
         {
             if (IsColWithPlayer == false)
             {
-                time.GetComponent<TIME>().SubTrackTime(true);
+                //time.GetComponent<TIME>().SubTrackTime(true);
                 IsColWithPlayer = true;
             }
         }
@@ -35,7 +35,7 @@ public class Ghost : MonoBehaviour
         {
             if (IsColWithPlayer == true)
             {
-                time.GetComponent<TIME>().SubTrackTime(false);
+               // time.GetComponent<TIME>().SubTrackTime(false);
                 IsColWithPlayer = false;
             }
         }
