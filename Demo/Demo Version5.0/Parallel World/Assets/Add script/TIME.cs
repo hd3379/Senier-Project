@@ -8,16 +8,16 @@ public class TIME : MonoBehaviour
     public Text missiontext;
     private float GameTime = 1;
     private float min = 30;
+    private float SubTime = 1.0f;
   
     void Start()
     {
         
     }
 
- 
     void Update()
     {
-        GameTime -= Time.deltaTime;
+        GameTime -= (Time.deltaTime * SubTime);
 
 
         //if((int)GameTime == 60)
@@ -37,12 +37,10 @@ public class TIME : MonoBehaviour
         //    missiontext.text = min + " : " + (int)GameTime;
         //}
 
-        if ((int)GameTime == 0)
+        if (GameTime <= 0)
         {
-            GameTime = 60;
+            GameTime = 60.0f;
             min -= 1;
-            GameTime -= Time.deltaTime;
-
         }
 
         if ((int)GameTime < 10)
@@ -52,6 +50,18 @@ public class TIME : MonoBehaviour
         else
         {
             missiontext.text = min + " : " + (int)GameTime;
+        }
+    }
+
+    public void SubTrackTime(bool IsGhost)
+    {
+        if (IsGhost)
+        {
+            SubTime = 7.0f;
+        }
+        else
+        {
+            SubTime = 1.0f;
         }
     }
 }
