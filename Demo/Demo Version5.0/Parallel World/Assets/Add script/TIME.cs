@@ -57,7 +57,7 @@ public class TIME : MonoBehaviour
     {
         if (IsGhost)
         {
-            SubTime = 7.0f;
+            SubTime = 30.0f;
         }
         else
         {

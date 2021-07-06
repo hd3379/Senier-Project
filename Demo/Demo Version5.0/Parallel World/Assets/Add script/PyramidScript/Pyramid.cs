@@ -103,6 +103,7 @@ public class Pyramid : MonoBehaviour
                     WorldChange = 3;
                     movingTime = Time.time;
                     IsMove = false;
+                    //Destroy(gameObject);
                     gameObject.SetActive(false);
                 }
             }
