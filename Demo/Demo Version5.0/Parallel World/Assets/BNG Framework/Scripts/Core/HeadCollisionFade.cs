@@ -26,6 +26,7 @@ namespace BNG {
 
         private GameObject keytool;//키튤팁  삭제용
         private GameObject maptool;//지도튤팁 삭제용
+       
 
         ScreenFader fader;
 
@@ -48,13 +49,18 @@ namespace BNG {
         private float currentFade = 0;
         private float lastFade = 0;
 
+
         public List<Collider> collisions;
+
+        void Awake()
+        {
+            
+        }
 
         void Start() {
             if(Camera.main) {
                 fader = Camera.main.transform.GetComponent<ScreenFader>();
             }
-           
         }
     
         void LateUpdate() {
@@ -159,8 +165,6 @@ namespace BNG {
 
                 startora = GameObject.FindGameObjectWithTag("stage1start");//미션포인트1 오라 받아오기
                 Destroy(startora);//삭제
-            
-      
 
             }
 
@@ -257,5 +261,7 @@ namespace BNG {
                 cols--;
             }
         }
+
+        
     }
 }
