@@ -12,7 +12,7 @@ namespace BNG {
         /// </summary>
         [Tooltip("The Character Capsule to  rotate along with")]
         public CharacterController Character;
-
+        public GameObject ob;
         /// <summary>
         /// Offset to apply in local space to the hmdTransform
         /// </summary>

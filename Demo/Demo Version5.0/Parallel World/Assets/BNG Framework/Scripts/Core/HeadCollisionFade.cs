@@ -19,6 +19,11 @@ namespace BNG {
         private GameObject fifthora;//미션5지점 오라 삭제용
         private GameObject sixora;//미션6지점 오라 삭제용
 
+
+        private GameObject keycard;//키아이템 설명
+        private GameObject mapitem;//맵아이템 설명
+        private GameObject hammer;  //망치아이템 설명
+
         private GameObject keytool;//키튤팁  삭제용
         private GameObject maptool;//지도튤팁 삭제용
 
@@ -116,6 +121,7 @@ namespace BNG {
             
         }
 
+        
         void OnCollisionEnter(Collision col) {
             if(collisions == null) {
                 collisions = new List<Collider>();
@@ -199,7 +205,7 @@ namespace BNG {
                 Destroy(thirdora);//삭제
 
 
-                questtext.text = "상자를 부술 도구 찾기"; //미션창 텍스트
+                questtext.text = "상자를"; //미션창 텍스트
                 Invoke("m", 6.0f);
 
 
@@ -216,23 +222,30 @@ namespace BNG {
 
             }
 
-            //if (col.gameObject.tag == "mission6")//미션포인트2 도달시
-            //{
-            //    missiontext.text = "사진과 편지를 책상위에 올려서 성수가 발견하게 하기 ";
+            //itemsub itemsub;
 
-            //    secondora = GameObject.FindGameObjectWithTag("mission2");//미션포인트3 오라 받아오기
-            //    Destroy(secondora);//삭제
-
-            //}
-
-            //미션3은 key script에서 처리
-
-            if(col.gameObject.tag == "ghost") //ghost 들에게 부딪혔을때
+            if (col.gameObject.tag == "keysub")//카드키 아이템 도달시
             {
-                
+        
+
+                keycard = GameObject.FindGameObjectWithTag("keysub");
+                Destroy(keycard);//삭제
+
+                GameObject.Find("itemsub").GetComponent<itemsub>().Keysub();
+
             }
 
-   
+            if (col.gameObject.tag == "mapsub")//맵 아이템 도달시
+            {
+
+
+                mapitem = GameObject.FindGameObjectWithTag("mapsub");
+                Destroy(mapitem);//삭제
+
+                GameObject.Find("itemsub").GetComponent<itemsub>().Mapsub();
+
+            }
+
         }
         void OnCollisionExit(Collision col) {
             if (collisions == null) {
