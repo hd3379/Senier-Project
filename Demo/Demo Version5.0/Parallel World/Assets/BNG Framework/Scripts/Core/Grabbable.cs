@@ -1661,6 +1661,7 @@ namespace BNG {
                         e.OnGrip(input.RightGrip);
                         e.OnTrigger(input.RightTrigger);
 
+
                         if (input.RightTriggerUp) {
                             e.OnTriggerUp();
                         }
@@ -2319,25 +2320,6 @@ namespace BNG {
             if (BeingHeld && IsValidCollision(collision) && !collisions.Contains(collision.collider)) {
                 collisions.Add(collision.collider);
             }
-
-
-
-           // handlemanager = GameObject.Find("HandleLookAt").GetComponent<Handlemanager>();
-           //// 키와 접촉시 잠금 / 열림
-
-           // if (collision.gameObject.tag == "h")//키와 접촉시
-           // {
-           //     handlemanager.crushkey = false;//핸들매니저스크립트 중지
-
-           //     //missiontext.text = "미션:2층과 3층의 가구들을 이용해 외부계단 통로를 막아라"; //미션텍스트 수정
-
-           //     keyob = GameObject.FindGameObjectWithTag("key");
-           //     Debug.Log("잠김");
-
-           //     Destroy(keyob);
-
-
-           // }
 
 
 

@@ -127,7 +127,7 @@ namespace BNG {
             
         }
 
-        
+        public GameObject changgomission;
         void OnCollisionEnter(Collision col) {
             if(collisions == null) {
                 collisions = new List<Collider>();
@@ -182,6 +182,8 @@ namespace BNG {
                 firstora = GameObject.FindGameObjectWithTag("mission1");//미션포인트1 오라 받아오기
                 Destroy(firstora);//삭제
 
+
+                changgomission.SetActive(true);
             }
 
             if (col.gameObject.tag == "mission2")//미션포인트2 도달시

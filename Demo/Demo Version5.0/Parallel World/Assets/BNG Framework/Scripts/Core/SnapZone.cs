@@ -319,11 +319,11 @@ namespace BNG
                     //Debug.Log("잠김");
 
 
-                    keytool = GameObject.FindGameObjectWithTag("keytool");//미션포인트2 오라 받아오기
-                    Destroy(keytool);//삭제
+                  //keytool = GameObject.FindGameObjectWithTag("keytool");//미션포인트2 오라 받아오기
+                    //Destroy(keytool);//삭제
 
-                    maptool = GameObject.FindGameObjectWithTag("maptool");//미션포인트2 오라 받아오기
-                    Destroy(maptool);//삭제
+                    //maptool = GameObject.FindGameObjectWithTag("maptool");//미션포인트2 오라 받아오기
+                   // Destroy(maptool);//삭제
 
                     if (DuplicateItemOnGrab) {
 
