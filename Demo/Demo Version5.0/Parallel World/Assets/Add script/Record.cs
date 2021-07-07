@@ -41,7 +41,7 @@ namespace BNG
         void Update()
         {
             //  if (Input.GetKeyDown(KeyCode.K))
-            if (InputBridge.Instance.XButton)
+            /*if (InputBridge.Instance.XButton)
             {
                 StartRecordMicrophone();
                 int word = 0;
@@ -56,7 +56,7 @@ namespace BNG
                 {
                     changetext.text = "시간이동";
                 }
-            }
+            }*/
             //if (Input.GetKeyUp(KeyCode.K))
             //{
             //    int word = 0;

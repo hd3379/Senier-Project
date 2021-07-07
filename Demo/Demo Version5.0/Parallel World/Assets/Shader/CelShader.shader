@@ -120,7 +120,7 @@
             float fPowedHDotN = pow(fHDotN, 500.0f);
 
             //! smoothstep
-            float fSpecularSmooth = smoothstep(0.005, 0.01f, fPowedHDotN);
+            float fSpecularSmooth = fPowedHDotN;
             fSpecularColor = fSpecularSmooth * 1.0f;
 
 
