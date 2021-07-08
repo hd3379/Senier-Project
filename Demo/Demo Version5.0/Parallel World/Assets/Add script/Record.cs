@@ -40,7 +40,7 @@ namespace BNG
         // Update is called once per frame
         void Update()
         {
-            //  if (Input.GetKeyDown(KeyCode.K))
+          /*  //  if (Input.GetKeyDown(KeyCode.K))
             if (InputBridge.Instance.XButton)
             {
                 StartRecordMicrophone();
@@ -56,7 +56,7 @@ namespace BNG
                 {
                     changetext.text = "시간이동";
                 }
-            }
+            }*/
             //if (Input.GetKeyUp(KeyCode.K))
             //{
             //    int word = 0;
